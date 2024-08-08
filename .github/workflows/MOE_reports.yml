@@ -35,4 +35,4 @@ jobs:
 
     - name: Run Python script
       run: |
-        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}"
+        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}" "${{ github.event.inputs.email }}" "${{ github.event.inputs.password }}"
