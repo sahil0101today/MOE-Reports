@@ -10,15 +10,52 @@
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
         .form-container {
             margin-top: 100px;
+            animation: fadeIn 1s ease-in-out;
         }
         .form-content {
             padding: 30px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .form-content:hover {
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
+        }
+        .custom-alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
         }
     </style>
 </head>
@@ -28,7 +65,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="form-content">
-                <h2 class="text-center mb-4">Submit URL & Recipients</h2>
+                <h2 class="text-center mb-4">Generate your report!</h2>
                 <form id="submitForm">
                     <div class="mb-3">
                         <label for="url" class="form-label">URL</label>
@@ -45,52 +82,15 @@
     </div>
 </div>
 
+<!-- Custom Alert Modals -->
+<div id="successAlert" class="custom-alert success">You will receive the report via email shortly..</div>
+<div id="errorAlert" class="custom-alert">Unable to generate the report. Please contact Sahil at sahil@0101.today for assistance.</div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom JavaScript -->
-<script>
-    document.getElementById('submitForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        var url = document.getElementById('url').value;
-        var recipients = document.getElementById('recipients').value;
-
-        // Replace this with your GitHub repository details
-        var githubRepo = 'sahil0101today/MOE-Reports';
-        var githubToken = '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';
-
-        // Create a GitHub API URL to trigger the workflow dispatch
-        var apiUrl = `https://api.github.com/repos/${githubRepo}/actions/workflows/MOE_reports.yml/dispatches`;
-
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': `token ${githubToken}`,
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ref: 'main', // The branch you want to run the workflow on
-                inputs: {
-                    url: url,
-                    recipients: recipients
-                    email: sessionStorage.getItem('email')
-                    password: sessionStorage.getItem('password')
-                }
-            })
-        }).then(response => {
-            if(response.ok) {
-                alert('GitHub Action triggered successfully.');
-            } else {
-                alert('Failed to trigger GitHub Action.');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    });
-</script>
+<!-- Link to the separated JavaScript file -->
+<script src="script.js"></script>
 
 </body>
 </html>
