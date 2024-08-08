@@ -10,10 +10,10 @@ on:
         description: 'Recipients of the message'
         required: true
       email:
-        description: 'emailss'
+        description: 'Email for authentication'
         required: true
       password:
-        description: 'passwordss'
+        description: 'Password for authentication'
         required: true
 
 jobs:
@@ -34,5 +34,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Python script
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely pass the GitHub token
       run: |
-        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}" "${{ github.event.inputs.email }}" "${{ github.event.inputs.password }}"
+        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}" "${{ github.event.inputs.email }}" "${{ github.event.inputs.password }}" "${{ env.TOKEN }}"
