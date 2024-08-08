@@ -223,7 +223,7 @@ try:
             msg['To'] = recipient_email
     
             try:
-                server = smtplib.SMTP(smtp_server, smtp_port)
+                server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.starttls()  # Upgrade the connection to secure
                 server.login(sender_email, password)
                 server.sendmail(sender_email, recipient_email, msg.as_string())
@@ -257,7 +257,7 @@ except Exception as e:
     msg['To'] = recipient_email
 
     try:
-        server = smtplib.SMTP(smtp_server, smtp_port)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()  # Upgrade the connection to secure
         server.login(sender_email, password)
         server.sendmail(sender_email, recipient_email, msg.as_string())
