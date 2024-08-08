@@ -29,4 +29,4 @@ jobs:
 
     - name: Run Python script
       run: |
-        python your_script.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}"
+        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}"
