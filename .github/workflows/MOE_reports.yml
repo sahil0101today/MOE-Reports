@@ -10,10 +10,10 @@ on:
         description: 'Recipients of the message'
         required: true
       email:
-        description: 'email'
+        description: 'emailss'
         required: true
       password:
-        description: 'password'
+        description: 'passwordss'
         required: true
 
 jobs:
