@@ -197,16 +197,16 @@ def process_url_and_recipients(url, recipients, email, password):
     
     # Send the email
     try:
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(sender_email, password)
-    text = msg.as_string()
-    server.sendmail(sender_email, receiver_email, text)
-    print('Email sent successfully.')
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, password)
+        text = msg.as_string()
+        server.sendmail(sender_email, receiver_email, text)
+        print('Email sent successfully.')
     except Exception as e:
-    print(f'Error: {e}')
+        print(f'Error: {e}')
     finally:
-    server.quit()
+        server.quit()
 
     
 
