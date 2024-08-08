@@ -14,28 +14,19 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
     var email = sessionStorage.getItem('email');
     var password = sessionStorage.getItem('password');
 
-    // Replace this with your GitHub repository details
-    var githubRepo = 'sahil0101today/MOE-Reports';
-    var githubToken = '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';
+    // Replace this with your Google Apps Script Web App URL
+    var googleAppsScriptUrl = 'https://script.google.com/macros/s/AKfycbyE5l1_Sb9-lAaC2veuTe3-2dxboGsXTUBNCRKOmkir7gxHcqaAtFxauaGHgkmD27VY/exec';
 
-    // Create a GitHub API URL to trigger the workflow dispatch
-    var apiUrl = `https://api.github.com/repos/${githubRepo}/actions/workflows/MOE_reports.yml/dispatches`;
-
-    fetch(apiUrl, {
+    fetch(googleAppsScriptUrl, {
         method: 'POST',
         headers: {
-            'Authorization': `token ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            ref: 'main', // The branch you want to run the workflow on
-            inputs: {
-                url: url,
-                recipients: recipients,
-                email: email,
-                password: password
-            }
+            url: url,
+            recipients: recipients,
+            email: email,
+            password: password
         })
     }).then(response => {
         if(response.ok) {
