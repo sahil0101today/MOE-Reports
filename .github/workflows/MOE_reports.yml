@@ -9,6 +9,12 @@ on:
       recipients:
         description: 'Recipients of the message'
         required: true
+      email:
+        description: 'email'
+        required: true
+      password:
+        description: 'password'
+        required: true
 
 jobs:
   run-script:
