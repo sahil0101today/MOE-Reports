@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit URL and Recipients</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            margin-top: 100px;
+        }
+        .form-content {
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="form-content">
+                <h2 class="text-center mb-4">Submit URL & Recipients</h2>
+                <form id="submitForm">
+                    <div class="mb-3">
+                        <label for="url" class="form-label">URL</label>
+                        <input type="url" class="form-control" id="url" placeholder="Enter the URL" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipients" class="form-label">Recipients</label>
+                        <input type="text" class="form-control" id="recipients" placeholder="Enter recipients (comma-separated)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    document.getElementById('submitForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var url = document.getElementById('url').value;
+        var recipients = document.getElementById('recipients').value;
+
+        // Replace this with your GitHub repository details
+        var githubRepo = 'sahil0101today/MOE-Reports';
+        var githubToken = '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';
+
+        // Create a GitHub API URL to trigger the workflow dispatch
+        var apiUrl = `https://api.github.com/repos/${githubRepo}/actions/workflows/MOE_reports.yml/dispatches`;
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${githubToken}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ref: 'main', // The branch you want to run the workflow on
+                inputs: {
+                    url: url,
+                    recipients: recipients
+                    email: sessionStorage.getItem('email')
+                    password: sessionStorage.getItem('password')
+                }
+            })
+        }).then(response => {
+            if(response.ok) {
+                alert('GitHub Action triggered successfully.');
+            } else {
+                alert('Failed to trigger GitHub Action.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    });
+</script>
+
+</body>
+</html>
