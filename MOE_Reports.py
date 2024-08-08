@@ -196,6 +196,9 @@ def process_url_and_recipients(url, recipients, email, password):
     part.add_header('Content-Disposition', f'attachment; filename= {csv_file}')
     msg.attach(part)
     attachment.close()
+
+    # Prepare the email addresses for sending
+    all_recipients = [receiver_email] + cc_emails
     
     # Send the email
     try:
@@ -203,13 +206,12 @@ def process_url_and_recipients(url, recipients, email, password):
         server.starttls()
         server.login(sender_email, password)
         text = msg.as_string()
-        server.sendmail(sender_email, receiver_email, cc_emails, text)
+        server.sendmail(sender_email, all_recipients, text)
         print('Email sent successfully.')
     except Exception as e:
         print(f'Error: {e}')
     finally:
         server.quit()
-
     
 
 if __name__ == '__main__':
