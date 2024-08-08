@@ -5,6 +5,12 @@ import zipfile
 import io
 import pandas as pd
 import numpy as np
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+
 
 def process_url_and_recipients(url, recipients, email, password):
     # Step 1: Request the URL
@@ -163,8 +169,45 @@ def process_url_and_recipients(url, recipients, email, password):
             Summary = pd.concat([Summary,i], ignore_index=True)
             
     Summary = Summary.replace("nan%", "")
+    csv_file = 'Summary.csv'
     Summary.to_csv("Summary.csv", index = False)
+
+    # Email configuration
+    sender_email = email
+    receiver_email = 'sahil@0101.today'
+    password = password  # Consider using an app password or environment variable for better security
+    subject = 'Subject: Hey, Your Summary Report Is Ready!'
+    body = 'Please the the attached report'
     
+    # Create the email
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+    
+    # Attach the CSV file
+    attachment = open(csv_file, 'rb')
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', f'attachment; filename= {csv_file}')
+    msg.attach(part)
+    attachment.close()
+    
+    # Send the email
+    try:
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+    text = msg.as_string()
+    server.sendmail(sender_email, receiver_email, text)
+    print('Email sent successfully.')
+    except Exception as e:
+    print(f'Error: {e}')
+    finally:
+    server.quit()
+
     
 
 if __name__ == '__main__':
