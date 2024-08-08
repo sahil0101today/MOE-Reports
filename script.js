@@ -16,7 +16,7 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
 
     // Replace this with your GitHub repository details
     var githubRepo = 'sahil0101today/MOE-Reports';
-    var githubToken = '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';
+    var githubToken = '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';
 
     // Create a GitHub API URL to trigger the workflow dispatch
     var apiUrl = `https://api.github.com/repos/${githubRepo}/actions/workflows/MOE_reports.yml/dispatches`;
