@@ -1,4 +1,3 @@
-
 import sys
 import requests
 import zipfile
@@ -179,7 +178,7 @@ def process_url_and_recipients(url, recipients, email, password):
     cc_emails = email_list
     password = password  # Consider using an app password or environment variable for better security
     subject = 'Hey, Your Summary Report Is Ready!'
-    body = 'Please the the attached report'
+    body = 'Please find the attached report'
     
     # Create the email
     msg = MIMEMultipart()
@@ -211,9 +210,30 @@ def process_url_and_recipients(url, recipients, email, password):
         print('Email sent successfully.')
     except Exception as e:
         print(f'Error: {e}')
-    finally:
-        server.quit()
-    
+        sender_email = 'sahil@0101.today'
+        password = 'zigcmfglmxthdvtn'
+        recipient_email = email
+        subject = "Incorrect Password Entered – Please Try Again"
+        body = "Hi, the password you entered to generate the report was incorrect. Please try again with the correct password."
+
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+
+        try:
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()  # Upgrade the connection to secure
+            server.login(sender_email, password)
+            server.sendmail(sender_email, recipient_email, msg.as_string())
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"Failed to send email: {e}")
+        finally:
+            server.quit()
+                
+            finally:
+                server.quit()
 
 if __name__ == '__main__':
     url = sys.argv[1]
