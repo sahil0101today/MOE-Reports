@@ -243,7 +243,7 @@ try:
         password = sys.argv[4]
         process_url_and_recipients(url, recipients, email, password)
 
-except:
+except Exception as e:
     print(f'Error: {e}')
     sender_email = 'sahil@0101.today'
     password = 'zigcmfglmxthdvtn'
