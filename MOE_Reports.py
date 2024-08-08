@@ -11,7 +11,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 
-def process_url_and_recipients(url, recipients, email, password):
+try:
+    def process_url_and_recipients(url, recipients, email, password):
     # Step 1: Request the URL
     print(f"Processing URL: {url}")
     print(f"Recipients: {recipients}")
@@ -232,12 +233,39 @@ def process_url_and_recipients(url, recipients, email, password):
         finally:
             server.quit()
                 
-            finally:
-                server.quit()
+    finally:
+        server.quit()
 
-if __name__ == '__main__':
-    url = sys.argv[1]
-    recipients = sys.argv[2]
-    email = sys.argv[3]
-    password = sys.argv[4]
-    process_url_and_recipients(url, recipients, email, password)
+    if __name__ == '__main__':
+        url = sys.argv[1]
+        recipients = sys.argv[2]
+        email = sys.argv[3]
+        password = sys.argv[4]
+        process_url_and_recipients(url, recipients, email, password)
+
+except:
+    print(f'Error: {e}')
+    sender_email = 'sahil@0101.today'
+    password = 'zigcmfglmxthdvtn'
+    recipient_email = email
+    subject = "Error Occured – Please Try Again"
+    body = "f'Error: {e}'"
+
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = recipient_email
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Upgrade the connection to secure
+        server.login(sender_email, password)
+        server.sendmail(sender_email, recipient_email, msg.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+    finally:
+        server.quit()
+
+
+
