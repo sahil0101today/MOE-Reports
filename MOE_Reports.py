@@ -10,6 +10,8 @@ def process_url_and_recipients(url, recipients):
     # Step 1: Request the URL
     print(f"Processing URL: {url}")
     print(f"Recipients: {recipients}")
+    print(f"Recipients: {email}")
+    print(f"Recipients: {password}")
     # Your processing logic here
 
     response = requests.get(url)
