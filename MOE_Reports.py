@@ -174,7 +174,8 @@ def process_url_and_recipients(url, recipients, email, password):
 
     # Email configuration
     sender_email = email
-    receiver_email = 'sahil@0101.today'
+    receiver_email = email
+    cc_emails = recipients
     password = password  # Consider using an app password or environment variable for better security
     subject = 'Subject: Hey, Your Summary Report Is Ready!'
     body = 'Please the the attached report'
@@ -183,6 +184,7 @@ def process_url_and_recipients(url, recipients, email, password):
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
+    msg['Cc'] = ",".join(cc_emails)
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
     
@@ -201,7 +203,7 @@ def process_url_and_recipients(url, recipients, email, password):
         server.starttls()
         server.login(sender_email, password)
         text = msg.as_string()
-        server.sendmail(sender_email, receiver_email, text)
+        server.sendmail(sender_email, receiver_email, cc_emails, text)
         print('Email sent successfully.')
     except Exception as e:
         print(f'Error: {e}')
