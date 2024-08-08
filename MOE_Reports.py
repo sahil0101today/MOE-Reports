@@ -178,7 +178,7 @@ def process_url_and_recipients(url, recipients, email, password):
     email_list = recipients.split(',')
     cc_emails = email_list
     password = password  # Consider using an app password or environment variable for better security
-    subject = 'Subject: Hey, Your Summary Report Is Ready!'
+    subject = 'Hey, Your Summary Report Is Ready!'
     body = 'Please the the attached report'
     
     # Create the email
