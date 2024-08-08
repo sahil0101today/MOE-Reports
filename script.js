@@ -29,12 +29,12 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
             password: password
         })
     }).then(response => {
-        if(response.ok) {
+        if (response.ok) {
             showAlert('successAlert');
             document.getElementById('submitForm').reset();
         } else {
-            response.json().then(data => {
-                console.error('Error:', data);
+            response.text().then(text => {
+                console.error('Error:', text);
                 showAlert('errorAlert');
             });
         }
