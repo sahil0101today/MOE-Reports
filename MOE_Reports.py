@@ -6,7 +6,7 @@ import io
 import pandas as pd
 import numpy as np
 
-def process_url_and_recipients(url, recipients):
+def process_url_and_recipients(url, recipients, email, password):
     # Step 1: Request the URL
     print(f"Processing URL: {url}")
     print(f"Recipients: {recipients}")
@@ -170,4 +170,6 @@ def process_url_and_recipients(url, recipients):
 if __name__ == '__main__':
     url = sys.argv[1]
     recipients = sys.argv[2]
-    process_url_and_recipients(url, recipients)
+    email = sys.argv[3]
+    password = sys.argv[4]
+    process_url_and_recipients(url, recipients, email, password)
