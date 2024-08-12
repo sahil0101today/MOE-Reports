@@ -169,8 +169,43 @@ try:
                 Summary = pd.concat([Summary,i], ignore_index=True)
                 
         Summary = Summary.replace("nan%", "")
-        csv_file = 'Summary.csv'
-        Summary.to_csv("Summary.csv", index = False)
+        #csv_file = 'Summary.csv'
+        #Summary.to_csv("Summary.csv", index = False)
+
+        response = requests.get(url)
+        response.raise_for_status()  # Ensure the request was successful
+    
+        # Step 2: Read the ZIP file
+        with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+            # Step 3: Extract and read each CSV file into a DataFrame
+            dataframes = {}
+            for filename in z.namelist():
+                if filename.endswith('.csv'):
+                    with z.open(filename) as f:
+                        df_name = filename.split('/')[-1].split('.')[0]  # Use the filename without extension as the key
+                        dataframes[df_name] = pd.read_csv(f)
+    
+        # Store each DataFrame with its respective name
+        for df_name, df in dataframes.items():
+            globals()[df_name] = df
+        
+        #Adding Summary sheet
+        dataframes['summary'] = Summary
+        
+        def truncate_sheet_name(name, max_length=31):
+            if len(name) > max_length:
+                return name[:max_length]
+            return name
+
+        # Create a Pandas Excel writer using XlsxWriter as the engine
+        with pd.ExcelWriter('SUMMARY_MIS.xlsx', engine='xlsxwriter') as writer:
+            # Iterate through the dictionary of DataFrames
+            for sheet_name, df in dataframes.items():
+                truncated_sheet_name = truncate_sheet_name(sheet_name)
+                df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
+        print("Excel file created successfully.")
+
+        excel_file = 'Summary_MIS.xlsx'
     
         # Email configuration
         sender_email = email
@@ -190,11 +225,11 @@ try:
         msg.attach(MIMEText(body, 'plain'))
         
         # Attach the CSV file
-        attachment = open(csv_file, 'rb')
+        attachment = open(excel_file, 'rb')
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(attachment.read())
         encoders.encode_base64(part)
-        part.add_header('Content-Disposition', f'attachment; filename= {csv_file}')
+        part.add_header('Content-Disposition', f'attachment; filename= {excel_file}')
         msg.attach(part)
         attachment.close()
     
