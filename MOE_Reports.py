@@ -206,6 +206,24 @@ try:
         with pd.ExcelWriter('SUMMARY_MIS.xlsx', engine='xlsxwriter') as writer:
             # Iterate through the dictionary of DataFrames
             for sheet_name, df in dataframes.items():
+                if '_EMAIL_' in sheet_name and '_flows_EMAIL_' not in sheet_name:
+                    truncated_sheet_name = "Email Campaigns"
+                elif '_flows_EMAIL_' in sheet_name:
+                    truncated_sheet_name = "Email Flows"
+                elif '_SMS_' in sheet_name and '_flows_SMS_' not in sheet_name:
+                    truncated_sheet_name = "SMS Campaign"
+                elif '_flows_SMS_' in sheet_name:
+                    truncated_sheet_name = "SMS Flows"
+                elif '_WHATSAPP_' in sheet_name and '_flows_WHATSAPP_' not in sheet_name:
+                    truncated_sheet_name = "Whatsapp Campaign"
+                elif '_flows_WHATSAPP_' in sheet_name:
+                    truncated_sheet_name = "Whatsapp Flows"
+                elif '_PUSH_' in sheet_name and '_flows_PUSH_' not in sheet_name:
+                    truncated_sheet_name = "Push Campaign"
+                elif '_flows_PUSH_' in sheet_name:
+                    truncated_sheet_name = "Push Flows"
+                else:
+                    truncated_sheet_name = truncate_sheet_name(sheet_name)
                 truncated_sheet_name = truncate_sheet_name(sheet_name)
                 df = drop_unnamed_column(df)
                 df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
