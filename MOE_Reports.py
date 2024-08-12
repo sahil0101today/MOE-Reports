@@ -197,11 +197,17 @@ try:
                 return name[:max_length]
             return name
 
+        def drop_unnamed_column(df):
+            if 'Unnamed: 0' in df.columns:
+                df = df.drop(columns=['Unnamed: 0'])
+            return df
+
         # Create a Pandas Excel writer using XlsxWriter as the engine
         with pd.ExcelWriter('SUMMARY_MIS.xlsx', engine='xlsxwriter') as writer:
             # Iterate through the dictionary of DataFrames
             for sheet_name, df in dataframes.items():
                 truncated_sheet_name = truncate_sheet_name(sheet_name)
+                df = drop_unnamed_column(df)
                 df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
         print("Excel file created successfully.")
 
