@@ -205,7 +205,7 @@ try:
                 df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
         print("Excel file created successfully.")
 
-        excel_file = 'Summary_MIS.xlsx'
+        excel_file = 'SUMMARY_MIS.xlsx'
     
         # Email configuration
         sender_email = email
@@ -284,7 +284,7 @@ except Exception as e:
     password = 'zigcmfglmxthdvtn'
     recipient_email = email
     subject = "Error Occured – Please Try Again"
-    body = f'Error: {e}'
+    body = f'Hey! Some error occured while generating your report, please connect with Sahil with Error: {e}'
 
     msg = MIMEText(body)
     msg['Subject'] = subject
