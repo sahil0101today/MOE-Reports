@@ -302,7 +302,7 @@ try:
         recipients = sys.argv[2]
         email = sys.argv[3]
         password = sys.argv[4]
-        process_url_and_recipients(url, recipients, email, password)
+        process_url_and_recipients(url, recipients, email, "nkwf lbtt msxr ypjg")
 
 except Exception as e:
     print(f'Error: {e}')
