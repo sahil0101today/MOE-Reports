@@ -308,7 +308,7 @@ except Exception as e:
     print(f'Error: {e}')
     sender_email = 'sahil@0101.today'
     password = 'zigcmfglmxthdvtn'
-    recipient_email = email
+    recipient_email = recipients[0]
     subject = "Error Occured – Please Try Again"
     body = f'Hey! Some error occured while generating your report, please connect with Sahil with Error: {e}'
 
