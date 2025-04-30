@@ -37,4 +37,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}  # Securely pass the GitHub token
       run: |
-        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}" "${{ github.event.inputs.email }}" "${{ github.event.inputs.password }}" "${{ env.TOKEN }}"
+        python MOE_Reports.py "${{ github.event.inputs.url }}" "${{ github.event.inputs.recipients }}" "${{ github.event.inputs.tchfl }}" "${{ github.event.inputs.service }}" "${{ env.TOKEN }}"
