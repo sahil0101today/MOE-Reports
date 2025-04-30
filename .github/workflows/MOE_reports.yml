@@ -9,11 +9,11 @@ on:
       recipients:
         description: 'Recipients of the message'
         required: true
-      email:
-        description: 'Email for authentication'
+      tchfl:
+        description: 'tchfl flag'
         required: true
-      password:
-        description: 'Password for authentication'
+      service:
+        description: 'service flag'
         required: true
 
 jobs:
