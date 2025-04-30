@@ -1,153 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOE Report</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <title>NUVA Login</title>
+  <style>
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      margin: 0;
+    }
 
-        .login-container {
-            margin-top: 100px;
-        }
+    :root {
+      --primary: rgb(182,157,230);
+    }
 
-        .login-form {
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease-in-out;
-        }
+    html, body {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      background: #f3f2f2;
+    }
 
-        .login-form:hover {
-            box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
-        }
+    .session {
+      display: flex;
+      flex-direction: row;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0px 2px 6px -1px rgba(0,0,0,.12);
+    }
 
-        .form-label {
-            font-weight: bold;
-        }
+    .left {
+      width: 220px;
+      background-image: url("");
+      background-size: cover;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            transition: background-color 0.3s ease;
-        }
+    .left svg {
+      height: 40px;
+      margin: 20px;
+    }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+    form {
+      padding: 40px 30px 20px;
+      background: #fefefe;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 300px;
+    }
 
-        .custom-alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #ffdddd;
-            color: #d8000c;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-            display: none;
-            z-index: 1000;
-        }
+    h4 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+      opacity: 0.85;
+      margin-bottom: 20px;
+    }
 
-        .custom-alert.show {
-            display: block;
-            animation: fadeIn 0.5s, fadeOut 0.5s 3s;
-        }
+    h4 span {
+      color: #000;
+      font-weight: 700;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+    p {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #000;
+      opacity: 0.65;
+      font-weight: 400;
+      margin-bottom: 40px;
+      max-width: 200px;
+    }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .floating-label {
+      position: relative;
+      margin-bottom: 10px;
+      width: 100%;
+    }
 
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    .floating-label label {
+      position: absolute;
+      top: 20px;
+      left: 44px;
+      font-size: 12.5px;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
 
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-    </style>
+    .floating-label input {
+      font-size: 16px;
+      padding: 20px 0px;
+      height: 56px;
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      background: #fff;
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      box-sizing: border-box;
+      transition: all 0.3s linear;
+      color: #000;
+    }
+
+    .floating-label input:focus {
+      border-bottom: 1px solid var(--primary);
+      outline: none;
+    }
+
+    .floating-label input:not(:placeholder-shown) {
+      padding: 28px 0px 12px 0px;
+    }
+
+    .floating-label input:not(:placeholder-shown) + label {
+      transform: translateY(-10px);
+      opacity: 0.7;
+    }
+
+    .floating-label .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 56px;
+      width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: var(--primary);
+      color: #fff;
+      padding: 15px 40px;
+      border-radius: 24px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0px 2px 6px -1px rgba(0,0,0,.13);
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+    }
+  </style>
 </head>
-
 <body>
+  <div class="session">
+    <div class="left">
+      <svg enable-background="new 0 0 300 302.5" viewBox="0 0 300 302.5" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#fff" d="m126 302.2c-2.3 0.7-5.7 0.2-7.7-1.2l-105-71.6c-2-1.3-3.7-4.4-3.9-6.7l-9.4-126.7c-0.2-2.4 1.1-5.6 2.8-7.2l93.2-86.4c1.7-1.6 5.1-2.6 7.4-2.3l125.6 18.9c2.3 0.4 5.2 2.3 6.4 4.4l63.5 110.1c1.2 2 1.4 5.5 0.6 7.7l-46.4 118.3c-0.9 2.2-3.4 4.6-5.7 5.3l-121.4 37.4zm63.4-102.7c2.3-0.7 4.8-3.1 5.7-5.3l19.9-50.8c0.9-2.2 0.6-5.7-0.6-7.7l-27.3-47.3c-1.2-2-4.1-4-6.4-4.4l-53.9-8c-2.3-0.4-5.7 0.7-7.4 2.3l-40 37.1c-1.7 1.6-3 4.9-2.8 7.2l4.1 54.4c0.2 2.4 1.9 5.4 3.9 6.7l45.1 30.8c2 1.3 5.4 1.9 7.7 1.2l52-16.2z"/>
+      </svg>
+    </div>
+    <form action="#" class="log-in" autocomplete="off" onsubmit="generateReport(); return false;">
+      <h4>TATA CAPITAL <span>- MIS</span></h4>
+      <p>Please enter your email address and the report URL to begin generating your report:</p>
 
-    <div class="container login-container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="login-form">
-                    <h2 class="text-center mb-4">Log in to Report Portal</h2>
-                    <form onsubmit="return validateAndRedirect()">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter your password"
-                                required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-                </div>
-            </div>
+      <!-- Checkbox Buttons -->
+    <div class="checkbox-group" style="margin-bottom: 16px; display: flex; gap: 20px;">
+        <label>
+        <input type="checkbox" name="TCHFL" id="tchflCheckbox" value="YES">
+        TCHFL
+        </label>
+        <label>
+        <input type="checkbox" name="SERVICE" id="serviceCheckbox" value="YES">
+        SERVICE
+        </label>
+    </div>
+
+      <div class="floating-label">
+        <input placeholder="Email" type="email" name="email" id="email" autocomplete="off" required>
+        <label for="email">Email:</label>
+        <div class="icon">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" fill="#ccc"/>
+          </svg>
         </div>
-    </div>
+      </div>
+      
+      <div class="floating-label">
+        <input placeholder="Report URL" type="url" name="url" id="url" autocomplete="off" required>
+        <label for="url">URL:</label>
+        <div class="icon">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" fill="#ccc"/>
+          </svg>
+        </div>
+      </div>
+      
+      <button type="submit">GENERATE REPORT</button>
+    </form>
+  </div>
 
-    <div id="customAlert" class="custom-alert">
-        Please use an email address that ends with @0101.today
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JavaScript -->
-    <script>
-        function showAlert(message) {
-            var alertBox = document.getElementById('customAlert');
-            alertBox.textContent = message;
-            alertBox.classList.add('show');
-            setTimeout(function () {
-                alertBox.classList.remove('show');
-            }, 3500);
+  <script>
+    function generateReport() {
+      Swal.fire({
+        title: "Have you uploaded the billable count?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Upload",
+        denyButtonText: "Continue"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.open('https://docs.google.com/spreadsheets/d/1m_BeiLm-PyXl5MUm-Ku64uMiy8b75IbYJIo5-n_brD8/edit?usp=sharing', '_blank');
+        } else if (result.isDenied) {
+          const checkboxTchfl = document.getElementById("tchflCheckbox");
+          const tchfl = checkboxTchfl.checked ? checkboxTchfl.value : "NO";
+  
+          const checkboxService = document.getElementById("serviceCheckbox");
+          const service = checkboxService.checked ? checkboxService.value : "NO";
+  
+          const url = document.getElementById('url').value;
+          const recipients = document.getElementById('email').value;
+  
+          console.log("URL:", url);
+          console.log("Recipients:", recipients);
+  
+          fetch('https://script.google.com/macros/s/AKfycbyE5l1_Sb9-lAaC2veuTe3-2dxboGsXTUBNCRKOmkir7gxHcqaAtFxauaGHgkmD27VY/exec')
+            .then(response => response.text())
+            .then(token => {
+              const githubToken = token.trim();
+              const githubRepo = 'sahil0101today/MOE-Reports';
+  
+              const apiUrl = `https://api.github.com/repos/${githubRepo}/actions/workflows/MOE_reports.yml/dispatches`;
+              fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `token ${githubToken}`,
+                  'Accept': 'application/vnd.github.v3+json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  ref: 'main',
+                  inputs: {
+                    url: url,
+                    recipients: recipients,
+                    tchfl: tchfl,
+                    service: service
+                  }
+                })
+              }).then(response => {
+                if (response.ok) {
+                  Swal.fire({
+                    title: "Request Submitted!",
+                    text: `You will receive the report shortly at ${recipients}!`,
+                    icon: "success"
+                  });
+                } else {
+                  response.json().then(data => {
+                    console.error('GitHub API Error:', data);
+                    Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Something went wrong with GitHub dispatch!",
+                    });
+                  });
+                }
+              }).catch(error => {
+                console.error('Fetch Error:', error);
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong while sending the request!",
+                });
+              });
+            })
+            .catch(error => {
+              console.error('Token Fetch Error:', error);
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Failed to fetch GitHub token!",
+              });
+            });
         }
-
-        function validateAndRedirect() {
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-
-            if (email.endsWith('@0101.today')) {
-                // Store email and password in session storage (temporary)
-                sessionStorage.setItem('email', email);
-                sessionStorage.setItem('password', password);
-                // Redirect to the desired page
-                window.location.href = 'main.html';
-                return false;
-            } else {
-                showAlert('Please use an email address that ends with @0101.today');
-                return false;
-            }
-        }
-    </script>
-
+      });
+    }
+  </script>
+   
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-
 </html>
