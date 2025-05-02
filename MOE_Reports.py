@@ -535,18 +535,38 @@ try:
             for sheet_name, df in dataframes.items():
                 if '_EMAIL_' in sheet_name and '_flows_EMAIL_' not in sheet_name:
                     truncated_sheet_name = "Email Campaigns"
+                    df["COST"] = df["Total Sent"]*0.03
                 elif '_CONNECTOR_' in sheet_name:
                     truncated_sheet_name = "_CONNECTOR_"
                 elif '_flows_EMAIL_' in sheet_name:
                     truncated_sheet_name = "Email Flows"
+                    df["COST"] = df["Total Sent"]*0.03
                 elif '_SMS_' in sheet_name and '_flows_SMS_' not in sheet_name:
                     truncated_sheet_name = "SMS Campaign"
+                    if df["Sent"].sum() >0:
+                        df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
+                        df["COST"] = df["BILLABLE COUNT"]*0.11
+                    
                 elif '_flows_SMS_' in sheet_name:
                     truncated_sheet_name = "SMS Flows"
+                    if df["Sent"].sum() >0:
+                        df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
+                        df["COST"] = df["BILLABLE COUNT"]*0.11
+                        
                 elif '_WHATSAPP_' in sheet_name and '_flows_WHATSAPP_' not in sheet_name:
                     truncated_sheet_name = "Whatsapp Campaign"
+                    if SERVICE_FLAG == "YES":
+                        df["COST"] = df["Total Delivered"]*0.13
+                    else:
+                        df["COST"] = df["Total Delivered"]*0.78
+                        
                 elif '_flows_WHATSAPP_' in sheet_name:
                     truncated_sheet_name = "Whatsapp Flows"
+                    if SERVICE_FLAG == "YES":
+                        df["COST"] = df["Total Delivered"]*0.13
+                    else:
+                        df["COST"] = df["Total Delivered"]*0.78
+                        
                 elif '_PUSH_' in sheet_name and '_flows_PUSH_' not in sheet_name:
                     truncated_sheet_name = "Push Campaign"
                 elif '_flows_PUSH_' in sheet_name:
@@ -555,6 +575,12 @@ try:
                     truncated_sheet_name = truncate_sheet_name(sheet_name)
                 #truncated_sheet_name = truncate_sheet_name(sheet_name)
                 df = drop_unnamed_column(df)
+                
+                if TCHFL_FLAG == "NO":
+                    df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                else:
+                    df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    
                 df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
         print("Excel file created successfully.")
         
@@ -611,7 +637,7 @@ try:
         recipients = sys.argv[2]
         tchfl = sys.argv[3]
         service = sys.argv[4]
-        process_url_and_recipients(url, recipients, tchfl, service, "nkwf lbtt msxr ypjg")
+        process_url_and_recipients(url, recipients, tchfl, service, "zigcmfglmxthdvtn")
         
         
 ########################################################################################################################
