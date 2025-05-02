@@ -643,7 +643,7 @@ try:
         recipients = sys.argv[2]
         tchfl = sys.argv[3]
         service = sys.argv[4]
-        process_url_and_recipients(url, recipients, tchfl, service, "zigcmfglmxthdvtn")
+        process_url_and_recipients(url, recipients, tchfl, service, "nkwf lbtt msxr ypjg")
         
         
 ########################################################################################################################
