@@ -650,11 +650,11 @@ try:
         recipients = sys.argv[2]
         tchfl = sys.argv[3]
         service = sys.argv[4]
-        process_url_and_recipients(url, recipients, tchfl, service, "nkwf lbtt msxr ypjg")
+        process_url_and_recipients("https://exports-03.moengage.com/v1/export/file/3936721", "sahil@0101.today", "NO", "NO", "nkwf lbtt msxr ypjg")
         
         
 ########################################################################################################################
                 
 
-except:
-    pass
+except Exception as e:
+    print(f"An error occurred: {e}")
