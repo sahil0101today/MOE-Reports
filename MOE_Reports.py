@@ -193,10 +193,11 @@ try:
                     #Summary creation test
                     df_test = df
                     df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
-                    df_test = df_test[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type"]]
+                    df_test = df_test[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_test.sum()
                     df_test = pd.DataFrame([column_sums], columns=column_sums.index)
                     df_test["Delivery Rate"] = ((df_test["Total Delivered"]/df_test["Sent"])*100).apply(lambda x: f"{x:.2f}%")
+                    df_test["Unique Click Rate"] = ((df_test["Unique Clicks"]/df_test["Total Delivered"])*100).apply(lambda x: f"{x:.2f}%")
                     df_test["Click Rate"] = ((df_test["Clicks"]/df_test["Total Delivered"])*100).round(2).apply(lambda x: f"{x:.2f}%")
                     df_test["Campaign Delivery Type"] = df_test["Campaign Delivery Type"].astype(str)
                     df_test["Channel"] = np.where(df_test["Campaign Delivery Type"].str.contains("Flows"), "SMS Flows", "SMS Campaign")
@@ -210,11 +211,12 @@ try:
                     df_copy.columns
                     
                     df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
-                    df_copy = df_copy[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type"]]
+                    df_copy = df_copy[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_copy.sum()
                     df_copy = pd.DataFrame([column_sums], columns=column_sums.index)
                     df_copy["Delivery Rate"] = ((df_copy["Total Delivered"]/df_copy["Sent"])*100).apply(lambda x: f"{x:.2f}%")
                     df_copy["Click Rate"] = ((df_copy["Clicks"]/df_copy["Total Delivered"])*100).round(2).apply(lambda x: f"{x:.2f}%")
+                    df_copy["Unique Click Rate"] = ((df_copy["Unique Clicks"]/df_copy["Total Delivered"])*100).apply(lambda x: f"{x:.2f}%")
                     df_copy["Campaign Delivery Type"] = df_copy["Campaign Delivery Type"].astype(str)
                     df_copy["Channel"] = np.where(df_copy["Campaign Delivery Type"].str.contains("Flows"), "SMS Flows", "SMS Campaign")
                     df_copy = df_copy.drop(columns=["Campaign Delivery Type"])
@@ -225,11 +227,12 @@ try:
                     df_combined = df
                     
                     df_combined.columns
-                    df_combined = df_combined[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type"]]
+                    df_combined = df_combined[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_combined.sum()
                     df_combined = pd.DataFrame([column_sums], columns=column_sums.index)
                     df_combined["Delivery Rate"] = ((df_combined["Total Delivered"]/df_combined["Sent"])*100).apply(lambda x: f"{x:.2f}%")
                     df_combined["Click Rate"] = ((df_combined["Clicks"]/df_combined["Total Delivered"])*100).round(2).apply(lambda x: f"{x:.2f}%")
+                    df_combined["Unique Click Rate"] = ((df_combined["Unique Clicks"]/df_combined["Total Delivered"])*100).apply(lambda x: f"{x:.2f}%")
                     df_combined["Campaign Delivery Type"] = df_combined["Campaign Delivery Type"].astype(str)
                     df_combined["Channel"] = np.where(df_combined["Campaign Delivery Type"].str.contains("Flows"), "SMS Flows", "SMS Campaign")
                     df_combined = df_combined.drop(columns=["Campaign Delivery Type"])
@@ -242,25 +245,25 @@ try:
                 
         if len(SMS_TEST_DF)>0:
             SMS_TEST_DF = pd.concat(SMS_TEST_DF, ignore_index=True)
-            SMS_TEST_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate" ]  # Adjust with your actual column names
+            SMS_TEST_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate", "Unique Clicks", "Unique Click Rate"]  # Adjust with your actual column names
             SMS_TEST_DF = SMS_TEST_DF[SMS_TEST_DF_column_order]
-            SMS_TEST_DF = SMS_TEST_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks"})
+            SMS_TEST_DF = SMS_TEST_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks", "Unique Clicks": "Unique clicks"})
         else:
             pass
         
         if len(SMS_DF)>0:
             SMS_DF = pd.concat(SMS_DF, ignore_index=True)
-            SMS_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate" ]  # Adjust with your actual column names
+            SMS_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate", "Unique Clicks", "Unique Click Rate" ]  # Adjust with your actual column names
             SMS_DF = SMS_DF[SMS_DF_column_order]
-            SMS_DF = SMS_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks"})
+            SMS_DF = SMS_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks", "Unique Clicks": "Unique clicks"})
         else:
             pass
         
         if len(SMS_COMBINED_DF)>0:
             SMS_COMBINED_DF = pd.concat(SMS_COMBINED_DF, ignore_index=True)
-            SMS_COMBINED_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate" ]  # Adjust with your actual column names
+            SMS_COMBINED_DF_column_order = ["Channel", "Sent", "Total Delivered", "Delivery Rate" , "Clicks" , "Click Rate", "Unique Clicks", "Unique Click Rate" ]  # Adjust with your actual column names
             SMS_COMBINED_DF = SMS_COMBINED_DF[SMS_COMBINED_DF_column_order]
-            SMS_COMBINED_DF = SMS_COMBINED_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks"})
+            SMS_COMBINED_DF = SMS_COMBINED_DF.rename(columns= {"Sent": "Total Sent", "Clicks": "Total clicks", "Unique Clicks": "Unique clicks"})
         else:
             pass
         
