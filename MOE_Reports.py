@@ -533,6 +533,7 @@ try:
         with pd.ExcelWriter('SUMMARY_MIS.xlsx', engine='xlsxwriter') as writer:
             # Iterate through the dictionary of DataFrames
             for sheet_name, df in dataframes.items():
+                print(sheet_name)
                 if '_EMAIL_' in sheet_name and '_flows_EMAIL_' not in sheet_name:
                     truncated_sheet_name = "Email Campaigns"
                     df["COST"] = df["Total Sent"]*0.03
@@ -576,10 +577,15 @@ try:
                 #truncated_sheet_name = truncate_sheet_name(sheet_name)
                 df = drop_unnamed_column(df)
                 
-                if TCHFL_FLAG == "NO":
-                    df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
-                else:
-                    df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                try:
+                    if TCHFL_FLAG == "NO":
+                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    else:
+                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                except:
+                    pass
+                
+                
                     
                 df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
         print("Excel file created successfully.")
