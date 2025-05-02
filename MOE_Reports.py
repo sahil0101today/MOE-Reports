@@ -471,7 +471,9 @@ try:
                 TEST_SUMMARY = pd.concat([TEST_SUMMARY,i], ignore_index=True)
                 
         TEST_SUMMARY = TEST_SUMMARY.replace("nan%", "")
-        TEST_SUMMARY = TEST_SUMMARY[TEST_SUMMARY['Total Sent']>0]
+        TEST_SUMMARY = TEST_SUMMARY[TEST_SUMMARY['Total Sent']>0.1]
+        
+        
                 
         
         SUMMARY_LIST = [EMAIL_DF,SMS_DF,WHATSAPP_DF,PN_DF]
@@ -482,6 +484,7 @@ try:
                 SUMMARY = pd.concat([SUMMARY,i], ignore_index=True)
                 
         SUMMARY = SUMMARY.replace("nan%", "")
+        SUMMARY = SUMMARY[SUMMARY['Total Sent']>0.1]
                 
         
         COMBINED_SUMMARY_LIST = [EMAIL_COMBINED_DF,SMS_COMBINED_DF,WHATSAPP_COMBINED_DF,PN_COMBINED_DF]
@@ -492,6 +495,7 @@ try:
                 COMBINED_SUMMARY = pd.concat([COMBINED_SUMMARY,i], ignore_index=True)
             
         COMBINED_SUMMARY = COMBINED_SUMMARY.replace("nan%", "")
+        COMBINED_SUMMARY = COMBINED_SUMMARY[COMBINED_SUMMARY['Total Sent']>0.1]
                 
         ##########################################################################################################################
         
