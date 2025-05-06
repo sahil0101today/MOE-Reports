@@ -587,13 +587,13 @@ try:
                 try:
                     if TCHFL_FLAG == "NO":
                         df = df[~df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
-                        df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
                     else:
                         df = df[df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
-                        df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
                 except:
                     pass
-                
+                    
+                df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
+
         print("Excel file created successfully.")
         
         excel_file = 'SUMMARY_MIS.xlsx'
