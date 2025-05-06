@@ -42,6 +42,8 @@ try:
         PN_DF = []
         PN_COMBINED_DF = []
         
+        UID_FLAG = "YES"
+        
         response = requests.get(url)
         response.raise_for_status()  # Ensure the request was successful
         
@@ -71,19 +73,37 @@ try:
         for name, df in dataframes.items():
             if '_EMAIL_' in name:
                 if df["Sent"].sum() >0:
-                    if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    try:
+                        df["UID"] = df["Campaign Name"]+df["Flows Name"]
+                    except:
+                        UID_FLAG = "NO"
+                        
+                    if TCHFL_FLAG == "NO": 
+                        if UID_FLAG == "YES":
+                            df = df[~df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
                     else:
-                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        if UID_FLAG == "YES":
+                            df = df[df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
                         
                     df["COST"] = df["Total Sent"]*0.03
+                    print(df["COST"].sum())
                     
                     zero_campaigns = df[df["Sent"] == 0].shape[0]
                     EMAIL_SENT_COUNT_ZERO_CAMPAIGNS = EMAIL_SENT_COUNT_ZERO_CAMPAIGNS + zero_campaigns
                     
                     #Summary creation test
                     df_test = df
-                    df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                    
+                    if UID_FLAG == "YES":
+                        df_test = df_test[df_test['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+
+
                     df_test = df_test[["Total Sent", "Total Delivered", "Total Open", "Unique opens", "Total clicks", "Unique clicks", "Total Hard bounces", "Total Soft bounces", "Unsubscribes", "Complaints" , "Campaign Delivery Type"]]
                     column_sums = df_test.sum()
                     df_test = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -105,6 +125,13 @@ try:
                     
                     # Actual Summary Creation 
                     df_copy = df
+                    df_copy.columns
+                    
+                    if UID_FLAG == "YES":
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                        
                     
                     df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                     df_copy = df_copy[["Total Sent", "Total Delivered", "Total Open", "Unique opens", "Total clicks", "Unique clicks", "Total Hard bounces", "Total Soft bounces", "Unsubscribes", "Complaints" , "Campaign Delivery Type"]]
@@ -179,11 +206,25 @@ try:
         for name, df in dataframes.items():
             if '_SMS_' in name:
                 if df["Sent"].sum() >0:
-                    df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
-                    if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')    
+                    
+                    try:
+                        df["UID"] = df["Campaign Name"]+df["Flows Name"]
+                    except:
+                        UID_FLAG = "NO"
+                        
+                    if TCHFL_FLAG == "NO": 
+                        if UID_FLAG == "YES":
+                            df = df[~df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]    
                     else:
-                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        if UID_FLAG == "YES":
+                            df = df[df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                            
+             
                         
                     df["COST"] = df["BILLABLE COUNT"]*0.11
                     
@@ -192,7 +233,12 @@ try:
                     
                     #Summary creation test
                     df_test = df
-                    df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                    
+                    if UID_FLAG == "YES":
+                        df_test = df_test[df_test['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                        
                     df_test = df_test[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_test.sum()
                     df_test = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -208,9 +254,11 @@ try:
                     # Actual Summary Creation 
                     df_copy = df
                     
-                    df_copy.columns
+                    if UID_FLAG == "YES":
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
                     
-                    df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                     df_copy = df_copy[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_copy.sum()
                     df_copy = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -238,10 +286,10 @@ try:
                     df_combined = df_combined.drop(columns=["Campaign Delivery Type"])
                     
                     SMS_COMBINED_DF.append(df_combined)
-                    
-                    
                 else:
                     pass
+                
+                
                 
         if len(SMS_TEST_DF)>0:
             SMS_TEST_DF = pd.concat(SMS_TEST_DF, ignore_index=True)
@@ -274,10 +322,23 @@ try:
         for name, df in dataframes.items():
             if '_WHATSAPP_' in name:
                 if df["Sent"].sum() >0:
-                    if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    
+                    try:
+                        df["UID"] = df["Campaign Name"]+df["Flows Name"]
+                    except:
+                        UID_FLAG = "NO"
+                        
+                    if TCHFL_FLAG == "NO": 
+                        if UID_FLAG == "YES":
+                            df = df[~df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                            
                     else:
-                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        if UID_FLAG == "YES":
+                            df = df[df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
                         
                     if SERVICE_FLAG == "YES":
                         df["COST"] = df["Total Delivered"]*0.13
@@ -289,7 +350,12 @@ try:
                     
                     #Summary creation test
                     df_test = df
-                    df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                    
+                    if UID_FLAG == "YES":
+                        df_test = df_test[df_test['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                        
                     df_test = df_test[["Total Sent", "Total Delivered", "Total Read", "Total clicks", "Unique clicks", "Campaign Delivery Type"]]
                     column_sums = df_test.sum()
                     df_test = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -309,7 +375,11 @@ try:
                     
                     df_copy.columns
                     
-                    df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
+                    if UID_FLAG == "YES":
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    
                     df_copy = df_copy[["Total Sent", "Total Delivered", "Total Read", "Total clicks", "Unique clicks", "Campaign Delivery Type"]]
                     column_sums = df_copy.sum()
                     df_copy = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -379,10 +449,23 @@ try:
         for name, df in dataframes.items():
             if '_PUSH_' in name:
                 if df["All Platform Sent"].sum() >0:
-                    if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                    
+                    try:
+                        df["UID"] = df["Campaign Name"]+df["Flows Name"]
+                    except:
+                        UID_FLAG = "NO"
+                        
+                    if TCHFL_FLAG == "NO": 
+                        if UID_FLAG == "YES":
+                            df = df[~df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                            
                     else:
-                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        if UID_FLAG == "YES":
+                            df = df[df['UID'].str.contains('TCHFL', na=False)]
+                        else:
+                            df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
                         
                     df["COST"] = 0
                     
@@ -391,7 +474,12 @@ try:
                     
                     #Summary creation test
                     df_test = df
-                    df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                    
+                    if UID_FLAG == "YES":
+                        df_test = df_test[df_test['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_test = df_test[df_test['Campaign Name'].str.contains('test', case=False, na=False)]
+                    
                     df_test = df_test[["All Platform Sent", "All Platform Impressions", "All Platform Clicks", "Campaign Delivery Type"]]
                     column_sums = df_test.sum()
                     df_test = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -407,7 +495,13 @@ try:
                     
                     # Actual Summary Creation 
                     df_copy = df
-                    df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
+                    df_copy.columns
+                    
+                    if UID_FLAG == "YES":
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    else:
+                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                    
                     df_copy = df_copy[["All Platform Sent", "All Platform Impressions", "All Platform Clicks", "Campaign Delivery Type"]]
                     column_sums = df_copy.sum()
                     df_copy = pd.DataFrame([column_sums], columns=column_sums.index)
@@ -547,19 +641,18 @@ try:
                 elif '_CONNECTOR_' in sheet_name:
                     truncated_sheet_name = "_CONNECTOR_"
                 elif '_flows_EMAIL_' in sheet_name:
+                    df["UID"] = df["Campaign Name"]+df["Flows Name"]
                     truncated_sheet_name = "Email Flows"
                     df["COST"] = df["Total Sent"]*0.03
                 elif '_SMS_' in sheet_name and '_flows_SMS_' not in sheet_name:
                     truncated_sheet_name = "SMS Campaign"
-                    if df["Sent"].sum() >0:
-                        df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
-                        df["COST"] = df["BILLABLE COUNT"]*0.11
-                    
+                    df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
+                    df["COST"] = df["BILLABLE COUNT"]*0.11
                 elif '_flows_SMS_' in sheet_name:
+                    df["UID"] = df["Campaign Name"]+df["Flows Name"]
                     truncated_sheet_name = "SMS Flows"
-                    if df["Sent"].sum() >0:
-                        df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
-                        df["COST"] = df["BILLABLE COUNT"]*0.11
+                    df = pd.merge(df, billable_count_df, on='Campaign ID', how='left')
+                    df["COST"] = df["BILLABLE COUNT"]*0.11         
                         
                 elif '_WHATSAPP_' in sheet_name and '_flows_WHATSAPP_' not in sheet_name:
                     truncated_sheet_name = "Whatsapp Campaign"
@@ -569,6 +662,7 @@ try:
                         df["COST"] = df["Total Delivered"]*0.78
                         
                 elif '_flows_WHATSAPP_' in sheet_name:
+                    df["UID"] = df["Campaign Name"]+df["Flows Name"]
                     truncated_sheet_name = "Whatsapp Flows"
                     if SERVICE_FLAG == "YES":
                         df["COST"] = df["Total Delivered"]*0.13
@@ -578,22 +672,42 @@ try:
                 elif '_PUSH_' in sheet_name and '_flows_PUSH_' not in sheet_name:
                     truncated_sheet_name = "Push Campaign"
                 elif '_flows_PUSH_' in sheet_name:
+                    df["UID"] = df["Campaign Name"]+df["Flows Name"]
                     truncated_sheet_name = "Push Flows"
                 else:
                     truncated_sheet_name = truncate_sheet_name(sheet_name)
                 #truncated_sheet_name = truncate_sheet_name(sheet_name)
                 df = drop_unnamed_column(df)
+    
                 
-                try:
-                    if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
-                    else:
-                        df = df[df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
-                except:
-                    pass
-                    
-                df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
 
+                if TCHFL_FLAG == "NO":
+                    try:
+                        df = df[~df['UID'].str.contains('TCHFL', na=False)]
+                        print(df.shape)
+                    except:
+                        try:
+                            df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                            print(df.shape)
+                        except:
+                            pass
+                else:
+                    try:
+                        df = df[df['UID'].str.contains('TCHFL', na=False)]
+                        print(df.shape)
+                        print("abc")
+                    except:
+                        try:
+                            df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                            print(df.shape)
+                            print("kkk")
+                        except:
+                            pass
+                        
+       
+                df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
+                print("*************")
+                print(df.shape)
         print("Excel file created successfully.")
         
         excel_file = 'SUMMARY_MIS.xlsx'
@@ -657,3 +771,4 @@ try:
 
 except Exception as e:
     print(f"An error occurred: {e}")
+
