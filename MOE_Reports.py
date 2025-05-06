@@ -586,10 +586,10 @@ try:
                 
                 try:
                     if TCHFL_FLAG == "NO":
-                        df = df[~df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        df = df[~df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
                         df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
                     else:
-                        df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
+                        df = df[df['Campaign Name'].apply(lambda x: bool(re.search("TCHFL", str(x))))]
                         df.to_excel(writer, sheet_name=truncated_sheet_name, index=False)
                 except:
                     pass
