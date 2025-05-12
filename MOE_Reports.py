@@ -130,7 +130,7 @@ try:
                     if UID_FLAG == "YES":
                         df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
                     else:
-                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                        df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                         
                     
                     df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
@@ -257,7 +257,7 @@ try:
                     if UID_FLAG == "YES":
                         df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
                     else:
-                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                        df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                     
                     df_copy = df_copy[["Sent", "Total Delivered", "Clicks", "Campaign Delivery Type", "Unique Clicks"]]
                     column_sums = df_copy.sum()
@@ -378,7 +378,7 @@ try:
                     if UID_FLAG == "YES":
                         df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
                     else:
-                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                        df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                     
                     df_copy = df_copy[["Total Sent", "Total Delivered", "Total Read", "Total clicks", "Unique clicks", "Campaign Delivery Type"]]
                     column_sums = df_copy.sum()
@@ -500,7 +500,7 @@ try:
                     if UID_FLAG == "YES":
                         df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
                     else:
-                        df_copy = df_copy[~df_copy['UID'].str.contains('test', case=False, na=False)]
+                        df_copy = df_copy[~df_copy['Campaign Name'].str.contains('test', case=False, na=False)]
                     
                     df_copy = df_copy[["All Platform Sent", "All Platform Impressions", "All Platform Clicks", "Campaign Delivery Type"]]
                     column_sums = df_copy.sum()
