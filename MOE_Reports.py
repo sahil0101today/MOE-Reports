@@ -341,9 +341,9 @@ try:
                             df = df[df['Campaign Name'].str.contains('TCHFL', na=False)]
                         
                     if SERVICE_FLAG == "YES":
-                        df["COST"] = df["Total Delivered"]*0.13
+                        df["COST"] = df["Total Delivered"]*0.1250
                     else:
-                        df["COST"] = df["Total Delivered"]*0.78
+                        df["COST"] = df["Total Delivered"]*0.90
                     
                     zero_campaigns = df[df["Total Sent"] == 0].shape[0]
                     WHATSAPP_SENT_COUNT_ZERO_CAMPAIGNS = WHATSAPP_SENT_COUNT_ZERO_CAMPAIGNS + zero_campaigns
@@ -657,17 +657,17 @@ try:
                 elif '_WHATSAPP_' in sheet_name and '_flows_WHATSAPP_' not in sheet_name:
                     truncated_sheet_name = "Whatsapp Campaign"
                     if SERVICE_FLAG == "YES":
-                        df["COST"] = df["Total Delivered"]*0.13
+                        df["COST"] = df["Total Delivered"]*0.1250
                     else:
-                        df["COST"] = df["Total Delivered"]*0.78
+                        df["COST"] = df["Total Delivered"]*0.90
                         
                 elif '_flows_WHATSAPP_' in sheet_name:
                     df["UID"] = df["Campaign Name"]+df["Flows Name"]
                     truncated_sheet_name = "Whatsapp Flows"
                     if SERVICE_FLAG == "YES":
-                        df["COST"] = df["Total Delivered"]*0.13
+                        df["COST"] = df["Total Delivered"]*0.1250
                     else:
-                        df["COST"] = df["Total Delivered"]*0.78
+                        df["COST"] = df["Total Delivered"]*0.90
                         
                 elif '_PUSH_' in sheet_name and '_flows_PUSH_' not in sheet_name:
                     truncated_sheet_name = "Push Campaign"
